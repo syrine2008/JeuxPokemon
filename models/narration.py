@@ -18,8 +18,8 @@ def intgame():
     print("\n")
     print(termcolor.colored("Taper entrer pour continuer ........ ", "red"))
 
-def arenes():
-     arenes =("")
-     print(termcolor.colored("Dans le monde des Pokemons il existe 3 Arénes : ", "cyan"))
-    
+def choixArene():
+    print(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ?  ", "magenta"))
+    print(termcolor.colored("si oui vous taper sur le button 'entrez' si non vous taper 'non'  ", "magenta"))
+    print("\n")
 
