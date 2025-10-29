@@ -133,10 +133,10 @@ def create_bject_arene():
          else :
              break
      
-    id = get_nb_arenes()+1
+  
     color = random.choice(termcolors)
     print(color)
-    arene = Arene(id,nom, ville, dresseur, type, 100,color)
+    arene = Arene(get_nb_arenes()+1,nom, ville, dresseur, type, 100,color)
     return arene
 
 

@@ -1,8 +1,10 @@
 import models.narration as narration
 import functions.arenes as arenefn
+import functions.pokemon as pokemonfn
 import termcolor
 from tabulate import tabulate
 
+#
 narration.intgame()
 input()
 arenes = arenefn.get_arenes()
@@ -13,19 +15,32 @@ input()
 
 
 
-narration.choixArene()
-choix = input()
+choix =input(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ? (entrer/non) ", "magenta"))
+
 arene_choisie = ""
 if choix == "":
     new_arene = arenefn.create_bject_arene()
     arenefn.add_arene(new_arene)
     arene_choisie = new_arene.name
+    arene_choisie = arenefn.get_arene_by_name(arene_choisie)
+    input( termcolor.colored(" Commencer à crer vos Pokemon \n ", "magenta"))
+
+    while True:
+       choix = input("ajouter ? (oui/non) : ")
+       if choix == "oui":
+         new_pokemon =  pokemonfn.create_object_pokemon(arene_choisie.id)
+         pokemonfn.add_pokemon(new_pokemon)
+         continue
+       elif choix == "non":
+          break
+       else:
+          break
+
 else :
     print("\n")
     print(" veuillez choisier une arene : ")
     print("\n")
-   # arenefn.affiche_arenes(arenefn.get_arenes())
-   # arene_choisie = input("entrer le nom de l'arene")
+ 
     while True:
       arene_choisie = input("entrer le nom de l'arene :  ")
       print("\n")
@@ -36,10 +51,12 @@ else :
         print("\n")
         continue
       else:
+         arene_choisie = arenefn.get_arene_by_name(arene_choisie)
          break
-
-arene_choisie = arenefn.get_arene_by_name(arene_choisie)
-print("Vous avez choisie l'arene : ")
+      
+print(" ✨ ✨ ✨ ✨ ✨✨ ✨ ✨ ✨ ✨" ,termcolor.colored("Votre monde est prét","yellow") ,"✨ ✨ ✨ ✨ ✨✨ ✨ ✨ ✨ ✨ \n")
+print(termcolor.colored("Vous avez choisie l'arene", "grey", "on_magenta", ["dark","bold"]))
+print("\n")
 table = []
 table.append([
             termcolor.colored(arene_choisie.name, arene_choisie.color),
@@ -50,6 +67,14 @@ table.append([
         ])
 header = ["Nom", "Ville", "Dresseur","type","score"]
 print(tabulate(table, headers=header, tablefmt="fancy_grid"))
+pokemonfn.affiche_pokemons( pokemonfn.get_pokemons_by_arena_id(arene_choisie.id))
+
+print(termcolor.colored("Taper entrer pour continuer ........ ", "red"))
+input()
+
+print(termcolor.colored("Maintenant il faut choisir l'arène adversaire ", "red"))
+input()
+
 
 
 

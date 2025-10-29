@@ -19,7 +19,7 @@ def intgame():
     print(termcolor.colored("Taper entrer pour continuer ........ ", "red"))
 
 def choixArene():
-    print(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ?  ", "magenta"))
-    print(termcolor.colored("si oui vous taper sur le button 'entrez' si non vous taper 'non'  ", "magenta"))
-    print("\n")
+    print(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ? (entrer/non)\n  ", "magenta"))
+
+   
 
