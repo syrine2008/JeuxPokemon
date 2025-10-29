@@ -6,7 +6,7 @@ from tabulate import tabulate
 import functions.combat as combat
 import random
 import time
-import os
+import models.dressuer as dresseur
 
 #------------------------------------
 #   introduction du jeux 
@@ -24,8 +24,8 @@ input()
 #   choisir si on creer une nouvelle arene ou  nn 
 #-------------------------------------------------
 
-#choix =input(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ? (entrer/non) ", "magenta"))
-choix = "non" # a changer à la fin du test 
+choix =input(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ? (entrer/non) : ", "magenta"))
+
 arene_choisie = "" # a changer à la fin du test 
 if choix == "":
     #---------------------------------------------------
@@ -62,7 +62,7 @@ else :
     while True:
       arene_choisie = input("entrer le nom de l'arene :  ")
       print("\n")
-      arene_choisie = "arene eau" # a retirer apres le test
+      
       if arene_choisie == "":
          continue
       if not(arenefn.arene_existe(arene_choisie)):
@@ -109,7 +109,7 @@ arenefn.affiche_arenes(arenefn.get_reste_arenes(arene_choisie.id))
 choix_addversaire = ""
 while True :
    choix_addversaire = input(termcolor.colored("Veuiller choisir l'addversaire entrez le nom :  ","cyan"))
-   choix_addversaire = "arene feu"  # a changer à la fin du test 
+  
    print("\n")
    if choix_addversaire == "":     
       continue
@@ -150,7 +150,7 @@ pokemonfn.affiche_pokemons(pokemon_arene_choisie)
 pokemon_combat_choisie = input(termcolor.colored("entrer le nom du pokemon :  ", "cyan"))
 print("\n")
 
-pokemon_combat_choisie="pokemon  3" # a retirer apres le test
+
 pokemon_combat_choisie = pokemonfn.get_pokemon_by_name(pokemon_combat_choisie,arene_choisie.id)
 pokemon_adversaire_combat_random = random.choice(pokemon_adversaire)
 resultat_combat = 0
@@ -169,28 +169,57 @@ while True:
          score_pokemon_choisie += 1
       print(" 💢 ",resultat_combat.name," a éte attaquer 💢 \n")
       time.sleep(0.4)
-      #pokemonfn.affiche_pokemon(resultat_combat)
 
-      continue     
-vinqeur = ""   
-if pokemon_adversaire_combat_random.pv > pokemon_combat_choisie.pv :
-   vinqeur = pokemon_adversaire_combat_random
-   score_vinquer = score_pokemon_adversaire
-   print("💀💀💀 Votre pokemon est KO 💀💀💀")   
-   print("\n")   
-#    pokemonfn.update_score(pokemon_adversaire_combat_random,score_pokemon_adversaire)
-#    print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
-#    pokemonfn.affiche_pokemon(pokemon_adversaire_combat_random)
-#    pokemonfn.update_niveau()
+      continue   
+vinqeur = "" 
+
+if pokemon_adversaire_combat_random.pv > pokemon_combat_choisie.pv:
+    vinqeur = pokemon_adversaire_combat_random
+    score_vinquer = score_pokemon_adversaire
+    print("💀💀💀 Votre Pokémon est KO 💀💀💀\n")
+
+    nb_soin = 0
+    while vinqeur != pokemon_combat_choisie and nb_soin < 3:
+        nb_soin += 1
+        choix_combat = input(" 💊 Voulez-vous soigner votre Pokémon et continuer le combat (oui/non): ")
+
+        if choix_combat == "oui":
+            dresseur.soigner_pokemon(pokemon_combat_choisie)     
+            pokemon_adversaire_combat_random = pokemonfn.get_pokemon_by_name(pokemon_adversaire_combat_random.name,choix_addversaire.id)
+            pokemon_combat_choisie = pokemonfn.get_pokemon_by_name(pokemon_combat_choisie.name,arene_choisie.id)
+                  
+            while True:
+   
+                if pokemon_adversaire_combat_random.pv <= 0 or pokemon_combat_choisie.pv <= 0:
+
+                    break
+                else:
+                    resultat_combat = combat.combat(pokemon_combat_choisie, pokemon_adversaire_combat_random)
+
+                    if resultat_combat == pokemon_adversaire_combat_random:
+                        score_pokemon_adversaire += 1
+                    else:
+                        score_pokemon_choisie += 1
+
+                    print(" 💢 ", resultat_combat.name, " a été attaqué 💢 \n")
+                    time.sleep(0.4)
+            if pokemon_adversaire_combat_random.pv > pokemon_combat_choisie.pv:
+                 vinqeur = pokemon_adversaire_combat_random
+                 score_vinquer = score_pokemon_adversaire
+                 print("\n💀💀💀 Votre Pokémon est KO 💀💀💀\n")
+            else:
+                 vinqeur = pokemon_combat_choisie
+                 score_vinquer = score_pokemon_choisie
+                 print("\n🏆🏆🏆 Votre Pokémon a gagné 🏆🏆🏆\n")
+
+
+        else:
+            break
 
 else:
-   vinqeur = pokemon_combat_choisie
-   score_vinquer=score_pokemon_choisie
-   print("🏆🏆🏆 Votre pokemon a gagné 🏆🏆🏆")
-   print("\n")
-   #pokemonfn.update_score(pokemon_combat_choisie,score_pokemon_choisie)
-   #print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
-   #pokemonfn.affiche_pokemon(pokemon_combat_choisie)
+    vinqeur = pokemon_combat_choisie
+    score_vinquer = score_pokemon_choisie
+    print("🏆🏆🏆 Votre Pokémon a gagné 🏆🏆🏆\n")
 
 pokemonfn.update_score(vinqeur,score_vinquer)
 print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))

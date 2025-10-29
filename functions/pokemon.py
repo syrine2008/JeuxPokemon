@@ -153,7 +153,6 @@ def create_object_pokemon(arene_id):
 #-----------------------------
 def get_pokemon_by_name(name,arena_id):
     for p in get_pokemons_by_arena_id(arena_id):
-        print(p.name)
         if p.name == name:
             return p
     return None
