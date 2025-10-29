@@ -21,5 +21,7 @@ def intgame():
 def choixArene():
     print(termcolor.colored("Vous voulez choisir une Aréne ou crer votre propre Aréne ? (entrer/non)\n  ", "magenta"))
 
+
+
    
 

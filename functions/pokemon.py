@@ -3,7 +3,9 @@ import openpyxl
 import random
 from tabulate import tabulate
 from models.Pokemon import Pokemon
-
+#--------------------------
+#   get all nb pokemons 
+#-------------------------
 def get_nb_pokemons():
     nb_pokemons = 0
     wb = openpyxl.load_workbook('arenes.xlsx')
@@ -14,10 +16,14 @@ def get_nb_pokemons():
             nb_pokemons = i
     return nb_pokemons
 
+#-----------------------------
+#   get pokemons by arena id
+#-----------------------------
 
 def get_pokemons_by_arena_id(arena_id):
     pokemons = []
     wb = openpyxl.load_workbook('arenes.xlsx')
+    
     ws = wb['pokemons']
 
     ids = [ws.cell(row=i, column=1).value for i in range(2, 102)]
@@ -48,6 +54,9 @@ def get_pokemons_by_arena_id(arena_id):
             )
     return pokemons
 
+#-----------------------------
+#   afficher les  pokemons
+#-----------------------------
 
 def affiche_pokemons(pokemons):
     print(termcolor.colored("Dans cette arène, il existe ", "yellow"),
@@ -74,7 +83,9 @@ def affiche_pokemons(pokemons):
     print(tabulate(table, headers=headers, tablefmt="fancy_grid"))
     print("\n")
 
-
+#-----------------------------
+#   ajouter le pokemon
+#-----------------------------
 def add_pokemon(pokemon):
     wb = openpyxl.load_workbook('arenes.xlsx')
     ws = wb['pokemons']
@@ -96,15 +107,18 @@ def add_pokemon(pokemon):
     wb.save('arenes.xlsx')
     print(termcolor.colored("✅ Votre Pokémon a été ajouté avec succès !", "green"))
 
+#---------------------------------
+#   verifier si le pokemon existe 
+#--------------------------------
 
-def pokemon_existe(name):
-    pokemons = get_pokemons_by_arena_id()
-    return any(p.name == name for p in pokemons)
+def pokemon_existe(name,arena_id):
+    pokemons = get_pokemons_by_arena_id(arena_id)
+    return bool(p.name == name for p in pokemons)
 
-
+#-------------------------------------
+#   crfeation du pokemon by arena id 
+#------------------------------------
 def create_object_pokemon(arene_id):
-
-
     while True:
         name = input("🪧 Entrez le nom du Pokémon : ")
         if name == "":
@@ -134,8 +148,67 @@ def create_object_pokemon(arene_id):
     pokemon = Pokemon(get_nb_pokemons()+1,name, arene_id, 0, pv, attaque, 1, 0, double_vie)
     return pokemon
 
-def get_pokemon_by_name(name):
-    for p in get_pokemons_by_arena_id():
+#-----------------------------
+#   get pokemons by name 
+#-----------------------------
+def get_pokemon_by_name(name,arena_id):
+    for p in get_pokemons_by_arena_id(arena_id):
+        print(p.name)
         if p.name == name:
             return p
     return None
+
+#-----------------------------
+#   afficher d'un seul pokemon 
+#-----------------------------
+
+def affiche_pokemon(p):
+    termcolors = ["red", "cyan", "green", "yellow", "grey", "magenta", "cyan"]
+    table = []
+
+    color = random.choice(termcolors)
+    table.append([
+            termcolor.colored(p.name, color),
+            termcolor.colored(p.arene, color),
+            termcolor.colored(p.score, color),
+            termcolor.colored(p.pv, color),
+            termcolor.colored(p.attaque, color),
+            termcolor.colored(p.niveau, color),
+            termcolor.colored(p.points_bonus, color),
+            termcolor.colored(p.double_vie, color)
+        ])
+
+    headers = ["Nom", "Arène", "Score", "PV", "Attaque", "Niveau", "Bonus", "Double Vie"]
+    print(tabulate(table, headers=headers, tablefmt="fancy_grid"))
+    print("\n")
+
+def update_pv(pokemon,pv):
+    wb = openpyxl.load_workbook('arenes.xlsx')
+    ws = wb['pokemons']
+    
+    for i in range(2,get_nb_pokemons()):
+        id_cell = ws.cell(row=i,column=1).value
+        if id_cell == pokemon.id:           
+            ws.cell(row=i,column=5).value = pv
+            pokemon.pv = pv
+            break
+    wb.save('arenes.xlsx')
+    return pokemon
+
+def update_score(pokemon,score):
+    wb = openpyxl.load_workbook('arenes.xlsx')
+    ws = wb['pokemons']
+
+    for i in range(2,get_nb_pokemons()):
+        id_cell = ws.cell(row=i,column=1).value
+        if id_cell == pokemon.id:
+            ws.cell(row=i,column=4).value = score
+            pokemon.score = score
+            break
+    wb.save('arenes.xlsx')
+    return pokemon
+
+
+
+            
+

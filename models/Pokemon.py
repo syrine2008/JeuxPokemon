@@ -11,4 +11,3 @@ class Pokemon :
         self.points_bonus = points_bonus
         self.double_vie = double_vie
     
-        

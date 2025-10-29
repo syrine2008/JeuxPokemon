@@ -4,6 +4,9 @@ from models.Arene import Arene
 import random
 from tabulate import tabulate
 
+#-------------------------------------
+#   get nb des arenes 
+#------------------------------------
 def get_nb_arenes():
     nb_arenes=0
     #recuperer les arenes existantes 
@@ -15,7 +18,9 @@ def get_nb_arenes():
              nb_arenes = i
     return nb_arenes
 
-    
+#-------------------------------------
+#  get tout les arenes 
+#------------------------------------    
 def get_arenes():
     arenes = []
     
@@ -41,9 +46,11 @@ def get_arenes():
            
 
     return arenes
-
+#-------------------------------------
+#   afficher les arenes
+#------------------------------------
 def affiche_arenes(arenes):
-    print(termcolor.colored("Dans le monde des Pokemons il existe", "yellow"),get_nb_arenes(),termcolor.colored("Arénes : \n", "yellow"))
+    print(termcolor.colored("Dans le monde des Pokemons il existe", "yellow"),len(arenes),termcolor.colored("Arénes : \n", "yellow"))
     termcolors =["red","cyan","green","yellow","grey","magenta","cyan"]
     table = []
     for arene in arenes:
@@ -71,7 +78,9 @@ def affiche_arenes(arenes):
         #print(termcolor.colored(arene.name, termcolors[i % len(termcolors)]))
     print('\n')
 
-
+#-------------------------------------
+#   enregister  un arene
+#------------------------------------
 def add_arene(arene):    
 
     wb = openpyxl.load_workbook('arenes.xlsx')
@@ -81,7 +90,9 @@ def add_arene(arene):
     wb.save('arenes.xlsx')
     print(termcolor.colored("✅ Votre Arene est ajouter avec sccces !!!! ","green"))
 
-
+#-------------------------------------
+#   verifier si l'arene existe 
+#------------------------------------
 def arene_existe(nom):
 
     arenes = get_arenes()
@@ -94,7 +105,9 @@ def arene_existe(nom):
         return False
 
 
-
+#-------------------------------------
+#   cration de l'objet arene
+#------------------------------------
 def create_bject_arene():
     termcolors =["red","cyan","green","yellow","grey","magenta","cyan"]
     arenes = get_arenes()
@@ -136,15 +149,33 @@ def create_bject_arene():
   
     color = random.choice(termcolors)
     print(color)
-    arene = Arene(get_nb_arenes()+1,nom, ville, dresseur, type, 100,color)
+    arene = Arene(get_nb_arenes()+1,nom, ville, dresseur, type, 0,color)
     return arene
 
-
+#-------------------------------------
+#   get arene by name  
+#------------------------------------
 def get_arene_by_name(name):
     arenes = get_arenes()
-    for i in arenes :
-        if i.name == name:
-            return i 
+    for a in arenes :
+        if a.name == name:
+            return a
+
+#-------------------------------------
+#   get arenes hors choix
+#------------------------------------
+def get_reste_arenes(arene_id):
+    arenes = get_arenes()
+    list_arenes = []
+
+    for a in arenes :
+        if a.id != arene_id:
+            list_arenes.append(a)
+    return list_arenes 
+
+
+
+
 
 
    
