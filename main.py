@@ -172,20 +172,30 @@ while True:
       #pokemonfn.affiche_pokemon(resultat_combat)
 
       continue     
-   
+vinqeur = ""   
 if pokemon_adversaire_combat_random.pv > pokemon_combat_choisie.pv :
+   vinqeur = pokemon_adversaire_combat_random
+   score_vinquer = score_pokemon_adversaire
    print("💀💀💀 Votre pokemon est KO 💀💀💀")   
    print("\n")   
-   pokemonfn.update_score(pokemon_adversaire_combat_random,score_pokemon_adversaire)
-   print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
-   pokemonfn.affiche_pokemon(pokemon_adversaire_combat_random)
+#    pokemonfn.update_score(pokemon_adversaire_combat_random,score_pokemon_adversaire)
+#    print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
+#    pokemonfn.affiche_pokemon(pokemon_adversaire_combat_random)
+#    pokemonfn.update_niveau()
 
 else:
+   vinqeur = pokemon_combat_choisie
+   score_vinquer=score_pokemon_choisie
    print("🏆🏆🏆 Votre pokemon a gagné 🏆🏆🏆")
-   pokemonfn.update_score(pokemon_combat_choisie,score_pokemon_choisie)
-   print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
-   pokemonfn.affiche_pokemon(pokemon_combat_choisie)
+   print("\n")
+   #pokemonfn.update_score(pokemon_combat_choisie,score_pokemon_choisie)
+   #print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
+   #pokemonfn.affiche_pokemon(pokemon_combat_choisie)
 
+pokemonfn.update_score(vinqeur,score_vinquer)
+print(termcolor.colored("le pokemon vainqueur est ", "magenta", ["dark","bold"]))
+pokemonfn.affiche_pokemon(vinqeur)
+pokemonfn.update_niveau(vinqeur)
 
 
 

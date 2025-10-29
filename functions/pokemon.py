@@ -209,6 +209,20 @@ def update_score(pokemon,score):
     return pokemon
 
 
+def update_niveau(pokemon):
+    wb = openpyxl.load_workbook('arenes.xlsx')
+    ws = wb['pokemons']
+
+    for i in range(2,get_nb_pokemons()):
+        id_cell = ws.cell(row=i,column=1).value
+        if id_cell == pokemon.id:
+            ws.cell(row=i,column=7).value += 1
+            pokemon.niveau += 1
+            break
+    wb.save('arenes.xlsx')
+    return pokemon
+
+
 
             
 
